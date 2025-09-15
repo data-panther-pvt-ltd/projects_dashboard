@@ -4,8 +4,8 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-const USERNAME = process.env.username;
-const PASSWORD = process.env.password;
+const USERNAME = process.env.NEXT_PUBLIC_USERNAME ?? '';
+const PASSWORD = process.env.NEXT_PUBLIC_PASSWORD ?? '';
 
 export default function LoginPage() {
   const router = useRouter();
