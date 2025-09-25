@@ -3,6 +3,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../../components/Navbar';
+import HeroSection from '@/components/Hero';
+import Faqs from '@/components/Faqs';
 
 const externalLinks = [
   {
@@ -35,15 +37,15 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const auth = localStorage.getItem('auth');
-    if (auth !== 'true') {
-      router.replace('/login');
-    }
+    fetch('/api/auth/me').then(r => { if (!r.ok) router.replace('/login'); });
   }, [router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-50">
       <Navbar />
+      <HeroSection/>
+
+    <section id='tools'>
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
@@ -70,11 +72,13 @@ export default function DashboardPage() {
             </a>
           ))}
         </div>
+        <Faqs/>
 
         <footer className="mt-20 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} DataPanther. All rights reserved.
+          © {new Date().getFullYear()} All rights reserved.
         </footer>
       </main>
+    </section>
     </div>
   );
 }

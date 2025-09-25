@@ -1,15 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from './LanguageProvider';
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
+  const { t, language } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      alert(`Searching for: ${query}`);
-     
+      const base = t('search.alert');
+      const message = language === 'ar' ? `${base}: ${query}` : `${base}: ${query}`;
+      alert(message);
     }
   };
 
@@ -18,7 +21,7 @@ export default function SearchBar() {
       <div className="relative">
         <input
           type="text"
-          placeholder="Search tools, documents..."
+          placeholder={t('search.placeholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"

@@ -9,12 +9,10 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const auth = localStorage.getItem('auth');
-    if (auth === 'true') {
-      router.replace('/protected/dashboard');
-    } else {
-      router.replace('/login');
-    }
+    fetch('/api/auth/me')
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then(() => router.replace('/protected/dashboard'))
+      .catch(() => router.replace('/login'));
   }, [router]);
 
   return null;

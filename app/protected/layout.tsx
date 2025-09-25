@@ -14,13 +14,16 @@ export default function ProtectedLayout({
   const [isAuth, setIsAuth] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const auth = localStorage.getItem('auth');
-    if (auth === 'true') {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
-      router.replace('/login');
-    }
+    fetch('/api/auth/me')
+      .then((r) => {
+        if (r.ok) return r.json();
+        throw new Error('unauth');
+      })
+      .then(() => setIsAuth(true))
+      .catch(() => {
+        setIsAuth(false);
+        router.replace('/login');
+      });
   }, [router]);
 
   if (isAuth === null) {
